@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Opportunities - LinkedIn 2003</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" style="max-width: 800px;">
+        <h1>Available Opportunities 📂</h1>
+        <div id="job-listings">
+            </div>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+    <script>
+        // --- BACKEND INTEGRATION POINT ---
+        // In a real application, you would fetch this data from your backend.
+        // For example:
+        /*
+        async function fetchJobs() {
+            try {
+                const response = await fetch('/api/jobs');
+                const jobs = await response.json();
+                renderJobs(jobs);
+            } catch (error) {
+                console.error('Error fetching jobs:', error);
+                document.getElementById('job-listings').innerHTML = '<p>Could not load jobs.</p>';
+            }
+        }
+        */
+
+        // For this frontend-only example, we use mock data.
+        const mockJobs = [
+            {
+                title: "Senior Java Developer",
+                description: "Looking for an experienced Java developer to work on enterprise-level applications. Knowledge of Spring Boot and microservices is a must.",
+                experience: 5
+            },
+            {
+                title: "Frontend Developer (Vanilla JS)",
+                description: "Passionate about creating beautiful user interfaces with plain JavaScript, HTML, and CSS. No frameworks, just pure skill.",
+                experience: 2
+            },
+            {
+                title: "MongoDB Database Administrator",
+                description: "We need a skilled DBA to manage, optimize, and scale our MongoDB clusters. Experience with sharding and replication is required.",
+                experience: 4
+            },
+            {
+                title: "Junior Software Engineer",
+                description: "An exciting opportunity for a recent graduate. You will learn from senior engineers and contribute to our core products.",
+                experience: 0
+            }
+        ];
+
+        function renderJobs(jobs) {
+            const listingsContainer = document.getElementById('job-listings');
+            
+            if (jobs.length === 0) {
+                listingsContainer.innerHTML = '<p>No job opportunities available at the moment.</p>';
+                return;
+            }
+
+            // Clear any existing content
+            listingsContainer.innerHTML = ''; 
+
+            jobs.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = 'job-card';
+
+                jobCard.innerHTML = `
+                    <h3>${job.title}</h3>
+                    <p><strong>Experience Required:</strong> ${job.experience} years</p>
+                    <p>${job.description}</p>
+                `;
+                listingsContainer.appendChild(jobCard);
+            });
+        }
+        
+        // When the page loads, render the mock jobs
+        document.addEventListener('DOMContentLoaded', () => {
+            // In the real version, you would call fetchJobs() here.
+            renderJobs(mockJobs);
+        });
+
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.sura.springmvc;
+package com.sura;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

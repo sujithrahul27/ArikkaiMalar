@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hire Talent - LinkedIn 2003</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Post a New Job 📝</h1>
+        <form id="hire-form">
+            <div class="form-group">
+                <label for="job-title">Job Title</label>
+                <input type="text" id="job-title" name="job-title" required>
+            </div>
+            <div class="form-group">
+                <label for="job-description">Job Description</label>
+                <textarea id="job-description" name="job-description" rows="6" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="experience">Years of Experience Required</label>
+                <input type="number" id="experience" name="experience" min="0" required>
+            </div>
+            <button type="submit" class="btn">Submit Job</button>
+        </form>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+    <script>
+        document.getElementById('hire-form').addEventListener('submit', function(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+
+            // Get form data
+            const jobTitle = document.getElementById('job-title').value;
+            const jobDescription = document.getElementById('job-description').value;
+            const experience = document.getElementById('experience').value;
+
+            const jobData = {
+                title: jobTitle,
+                description: jobDescription,
+                experience: parseInt(experience)
+            };
+            
+            // --- BACKEND INTEGRATION POINT ---
+            // In a real application, you would send this 'jobData' object
+            // to your Java backend using the Fetch API.
+            // For example:
+            /*
+            fetch('/api/jobs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(jobData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Job posted successfully!');
+                window.location.href = 'jobs.html'; // Redirect to see the new job
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to post job.');
+            });
+            */
+            
+            // For this frontend-only example, we'll just log it and show an alert.
+            console.log('Job Data Submitted:', jobData);
+            alert(`Job "${jobData.title}" posted successfully!`);
+            
+            // Clear the form for the next entry
+            this.reset();
+        });
+    </script>
+</body>
+</html>
