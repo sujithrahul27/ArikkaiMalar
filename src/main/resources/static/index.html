@@ -3,18 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinkedIn 2003</title>
+    <title>LinkedIn 2003 - Find Your Next Role</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>LinkedIn 2003 🚀</h1>
-        <p>Your minimalist portal for professional opportunities.</p>
-        <div class="button-group" style="margin-top: 30px;">
-            <a href="hire.html" class="btn">Hire Talent</a>
-            
-            <a href="jobs.html" class="btn">Get Hired</a>
+        <header>
+            <h1>LinkedIn 2003</h1>
+            <p>Your minimalist portal for professional opportunities.</p>
+            <a href="hire.html" class="btn post-job-btn">Post a Job</a>
+        </header>
+
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search by skill (e.g., Java, React)...">
+            <button id="search-btn" class="btn">Search</button>
         </div>
+
+        <main id="job-listings">
+            <!-- Job cards will be dynamically inserted here by JavaScript -->
+        </main>
     </div>
+
+    <script>
+        const listingsContainer = document.getElementById('job-listings');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+
+        // Function to render job cards on the page
+        function renderJobs(jobs) {
+            listingsContainer.innerHTML = ''; // Clear previous listings
+
+            if (!jobs || jobs.length === 0) {
+                listingsContainer.innerHTML = '<p class="no-jobs">No matching jobs found.</p>';
+                return;
+            }
+
+            jobs.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = 'job-card';
+                jobCard.innerHTML = `
+                    <h3>${job.jobTitle}</h3>
+                    <h4>${job.company} - <span class="location">${job.location}</span></h4>
+                    <p>${job.jobDescription}</p>
+                    <div class="skills"><strong>Skills:</strong> ${job.skills.join(', ')}</div>
+                    <div class="details">
+                        <span><strong>Experience:</strong> ${job.experience} years</span>
+                        <span><strong>Interview Date:</strong> ${job.interviewDate}</span>
+                    </div>
+                    <div class="address"><strong>Office Address:</strong> ${job.officeAdress}</div>
+                `;
+                listingsContainer.appendChild(jobCard);
+            });
+        }
+
+        // Function to fetch jobs from a given URL
+        async function fetchJobs(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const jobs = await response.json();
+                renderJobs(jobs);
+            } catch (error) {
+                console.error('Error fetching jobs:', error);
+                listingsContainer.innerHTML = '<p class="no-jobs">Could not load jobs. Please try again later.</p>';
+            }
+        }
+
+        // Event listener for the search button
+        searchBtn.addEventListener('click', () => {
+            const skill = searchInput.value.trim();
+            if (skill) {
+                // Calls your /searchskill/{skill} endpoint
+                fetchJobs(`/searchskill/${skill}`);
+            } else {
+                // If search is empty, load all jobs
+                fetchJobs('/getjobs');
+            }
+        });
+        
+        // Also allow searching by pressing Enter
+        searchInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                searchBtn.click();
+            }
+        });
+
+        // Initial load: Fetch all jobs when the page opens
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchJobs('/getjobs');
+        });
+    </script>
 </body>
 </html>

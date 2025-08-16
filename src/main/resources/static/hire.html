@@ -3,74 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hire Talent - LinkedIn 2003</title>
+    <title>Post a Job - LinkedIn 2003</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Post a New Job 📝</h1>
+        <header>
+            <h1>Post a New Job Opening</h1>
+            <p>Fill out the details below to find your next great hire.</p>
+        </header>
+
         <form id="hire-form">
             <div class="form-group">
-                <label for="job-title">Job Title</label>
-                <input type="text" id="job-title" name="job-title" required>
+                <label for="jobTitle">Job Title</label>
+                <input type="text" id="jobTitle" required>
             </div>
             <div class="form-group">
-                <label for="job-description">Job Description</label>
-                <textarea id="job-description" name="job-description" rows="6" required></textarea>
+                <label for="company">Company Name</label>
+                <input type="text" id="company" required>
             </div>
             <div class="form-group">
-                <label for="experience">Years of Experience Required</label>
-                <input type="number" id="experience" name="experience" min="0" required>
+                <label for="jobDescription">Job Description</label>
+                <textarea id="jobDescription" rows="5" required></textarea>
             </div>
-            <button type="submit" class="btn">Submit Job</button>
+            <div class="form-group">
+                <label for="skills">Required Skills (comma-separated)</label>
+                <input type="text" id="skills" placeholder="e.g., Java, Spring, MongoDB" required>
+            </div>
+            <div class="form-group">
+                <label for="experience">Years of Experience</label>
+                <input type="number" id="experience" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location (e.g., Remote, City)</label>
+                <input type="text" id="location" required>
+            </div>
+            <div class="form-group">
+                <label for="officeAdress">Office Address</label>
+                <input type="text" id="officeAdress" required>
+            </div>
+            <div class="form-group">
+                <label for="interviewDate">Interview Date</label>
+                <input type="date" id="interviewDate" required>
+            </div>
+
+            <button type="submit" class="btn">Submit Job Posting</button>
+            <a href="index.html" class="back-link">← Back to Job Listings</a>
         </form>
-        <a href="index.html" class="back-link">← Back to Home</a>
     </div>
 
     <script>
-        document.getElementById('hire-form').addEventListener('submit', function(event) {
-            // Prevent the default form submission
+        const hireForm = document.getElementById('hire-form');
+
+        hireForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
-            // Get form data
-            const jobTitle = document.getElementById('job-title').value;
-            const jobDescription = document.getElementById('job-description').value;
-            const experience = document.getElementById('experience').value;
-
             const jobData = {
-                title: jobTitle,
-                description: jobDescription,
-                experience: parseInt(experience)
+                jobTitle: document.getElementById('jobTitle').value,
+                company: document.getElementById('company').value,
+                jobDescription: document.getElementById('jobDescription').value,
+                experience: parseInt(document.getElementById('experience').value),
+                location: document.getElementById('location').value,
+                officeAdress: document.getElementById('officeAdress').value,
+                interviewDate: document.getElementById('interviewDate').value,
+                skills: document.getElementById('skills').value.split(',').map(s => s.trim())
             };
-            
-            // --- BACKEND INTEGRATION POINT ---
-            // In a real application, you would send this 'jobData' object
-            // to your Java backend using the Fetch API.
-            // For example:
-            /*
-            fetch('/api/jobs', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(jobData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
+
+            try {
+                // This calls the new /postjob endpoint you should add
+                const response = await fetch('/postjob', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(jobData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
                 alert('Job posted successfully!');
-                window.location.href = 'jobs.html'; // Redirect to see the new job
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Failed to post job.');
-            });
-            */
-            
-            // For this frontend-only example, we'll just log it and show an alert.
-            console.log('Job Data Submitted:', jobData);
-            alert(`Job "${jobData.title}" posted successfully!`);
-            
-            // Clear the form for the next entry
-            this.reset();
+                window.location.href = 'index.html'; // Redirect to the main page
+
+            } catch (error) {
+                console.error('Failed to post job:', error);
+                alert('Error: Could not post job. Please check console for details.');
+            }
         });
     </script>
 </body>
