@@ -37,6 +37,12 @@ public class DispatchController {
 		public List<Job> putJobs(@RequestBody List<Job> jobs){
 			return ds.saveJobs(jobs);
 		}
+	
+	//adding single job
+	@PostMapping("/postjob") 
+	public Job postJob(@RequestBody Job job) {
+	    return ds.saveJob(job);
+	}
 	}
 
 	
