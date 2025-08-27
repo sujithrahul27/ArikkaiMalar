@@ -1,4 +1,4 @@
-package com.sura.controller;
+package com.sura.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,12 +12,12 @@ import com.sura.model.JobsRepository;
 
 
 @Service
-public class DbService {
+public class JobsDbService {
 	@Autowired
 	JobsRepository jr;
 	
 	//reading all job data
-	List<Job> retriveJobs(){
+	public List<Job> retriveJobs(){
 		return jr.findAll();
 	}
 	
@@ -27,13 +27,13 @@ public class DbService {
 	}
 	
 	//creating all jobs
-	List<Job> saveJobs(List<Job> jobs){
+	public List<Job> saveJobs(List<Job> jobs){
 		jr.saveAll(jobs);
 		return jobs;
 	}
 	
 	//creating one jobs 
-	Job saveJob(Job job) {
+	public Job saveJob(Job job) {
 		jr.save(job);
 		return job;
 	}

@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sura.model.Job;
 import com.sura.model.Search;
+import com.sura.service.JobsDbService;
 
 @RestController
 public class DispatchController {
 	@Autowired 
-	DbService ds;
+	JobsDbService ds;
 	@Autowired
 	Search s;
 	
