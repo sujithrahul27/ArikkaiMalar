@@ -27,11 +27,12 @@ public class SecurityConfig {
 		
 		return security
 			   .csrf(csrf -> csrf.disable())
-			   .authorizeHttpRequests(request -> request.requestMatchers("/register","/mylogin.html","mylogin").permitAll()
+			   .authorizeHttpRequests(request -> request.requestMatchers("/register","/mylogin.html","/mylogin").permitAll()
 					   .anyRequest().authenticated())
 			   .httpBasic(form -> form.disable())
-			   .formLogin(form -> form.disable())
+			   .formLogin(Customizer.withDefaults())
 			   .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+			   .oauth2Login(Customizer.withDefaults())
 			   .build();
 			   
 		
