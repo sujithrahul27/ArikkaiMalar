@@ -30,9 +30,8 @@ public class SecurityConfig {
 			   .authorizeHttpRequests(request -> request.requestMatchers("/register","/mylogin.html","/mylogin").permitAll()
 					   .anyRequest().authenticated())
 			   .httpBasic(form -> form.disable())
-			   .formLogin(Customizer.withDefaults())
+			   .formLogin(form -> form.disable())
 			   .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-			   .oauth2Login(Customizer.withDefaults())
 			   .build();
 			   
 		
