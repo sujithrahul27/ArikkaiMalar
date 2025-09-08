@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,9 +29,8 @@ public class SecurityConfig {
 			   .authorizeHttpRequests(request -> request.requestMatchers("/register","/mylogin.html","/mylogin").permitAll()
 					   .anyRequest().authenticated())
 			   .httpBasic(form -> form.disable())
-			   .formLogin(Customizer.withDefaults())
+			   .formLogin(form -> form.disable())
 			   .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-			   .oauth2Login(Customizer.withDefaults())
 			   .build();
 			   
 		
